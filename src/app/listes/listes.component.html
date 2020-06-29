@@ -1,0 +1,163 @@
+<div class="container">
+
+
+    <fieldset>
+      <legend>Read/Show</legend>
+      <div class="form-group mb-4">
+        <p> <!-- Search :  <input type="text" /> -->
+          Search : <input class="form-control" type="text" [(ngModel)]="searchText" placeholder="Search">
+        </p>
+      </div>
+      <br />
+      <table class="table table-striped" *ngIf="(users | filter: searchText).length > 0; else noResults">
+        <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Family</th>
+            <th>Birthday </th>
+            <th>Item </th>
+            <th>Actions</th>
+          </tr>
+          <tr *ngFor="let user of users | filter: searchText; let i = index">
+            <td>{{user.name}}</td>
+            <td>{{user.family}}</td>
+            <td>{{user.birthday}}</td>
+            <td>{{user.itemNum}}</td>
+            <td>
+              <input (click)="delete(i)" type="button" value="Delete" />
+              <input (click)="open(content)" (click)="setEditUser(i)" type="button" value="Edit" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </fieldset>
+
+    <ng-template #noResults>
+      <p>No results found for "{{searchText}}".</p>
+    </ng-template>
+
+
+
+
+    <!--<fieldset>
+      <legend>Add/Edit</legend>
+      <p>Name :
+                <input [(ngModel)]="name" type="text" />
+      </p>
+      <p>Family :
+                <input [(ngModel)]="family" type="text" />
+      </p>
+      <p>Item :
+                    <input  [(ngModel)]="itemNum" type="number" />
+     </p>
+      <p>Birthday :
+                 <input  [(ngModel)]="birthday" type="birthday" />
+      </p>
+      <input [hidden]="editingIndex!==undefined" (click)="add()" type="button" value="Add"  />
+      <input [hidden]="editingIndex===undefined" (click)="edit()" type="button" value="update" />
+      <input (click)="cancel()" [hidden]="editingIndex===undefined" type="button" value="cancel"  />
+    </fieldset>-->
+
+    
+
+    <ng-template #content let-modal >
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add/Edit</h4>
+          <button type="button" class="close" aria-label="Close" id="closeBtn" (click)="modal.dismiss('close')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            
+            
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                
+
+
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input  [(ngModel)]="name" class="form-control" formControlName="name" type="text" [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                        <div *ngIf="f.name.errors.required">Name is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Family:</label>
+                    <input  [(ngModel)]="family" class="form-control" formControlName="family" type="text" [ngClass]="{ 'is-invalid': submitted && f.family.errors }">
+                    <div *ngIf="submitted && f.family.errors" class="invalid-feedback">
+                        <div *ngIf="f.family.errors.required">family is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Item Num:</label>
+                    <input  [(ngModel)]="itemNum" class="form-control" formControlName="itemNum" type="number" [ngClass]="{ 'is-invalid': submitted && f.itemNum.errors }">
+                    <div *ngIf="submitted && f.itemNum.errors" class="invalid-feedback">
+                        <div *ngIf="f.itemNum.errors.required">Item Num is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Birthday:</label>
+                    <input  [(ngModel)]="birthday" class="form-control" formControlName="birthday" type="date" [ngClass]="{ 'is-invalid': submitted && f.birthday.errors }">
+                    <div *ngIf="submitted && f.birthday.errors" class="invalid-feedback">
+                        <div *ngIf="f.birthday.errors.required">Birthday is required</div>
+                    </div>
+                </div>
+
+
+
+
+
+               
+                <div class="text-center">
+                    <button type="button" class="btn btn-outline-dark" [hidden]="editingIndex!==undefined" (click)="add()" >Add</button>
+                    <button type="button" class="btn btn-outline-dark" [hidden]="editingIndex===undefined" (click)="edit()" >Edit</button>
+                    <button class="btn btn-secondary" type="reset" (click)="cancel()">Cancel</button>
+                </div>
+
+            
+            </form>
+
+
+            <!--<fieldset>
+                <p>Name :
+                          <input id="name" [(ngModel)]="name" type="text" />
+                          
+                </p>
+                <p>Family :
+                          <input [(ngModel)]="family" type="text" />
+                </p>
+                <p>Item :
+                              <input  [(ngModel)]="itemNum" type="number" />
+               </p>
+                <p>Birthday :
+                           <input  [(ngModel)]="birthday" type="birthday" />
+                </p>
+                
+                <input [hidden]="editingIndex!==undefined" (click)="add()" type="button" value="Add"  />
+                <input [hidden]="editingIndex===undefined" (click)="edit()" type="button" value="update" />
+                <input (click)="cancel()" [hidden]="editingIndex===undefined" type="button" value="cancel"  />
+              
+            </fieldset> -->
+
+            
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </ng-template>
+
+
+      
+      <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Add new user</button>
+    
+
+
+
+
+
+
+
+  </div>
